@@ -345,4 +345,36 @@ $("#copyBtn").onclick = async (e) => {
   try { await navigator.clipboard.writeText(EMAIL); b.textContent = "Copied"; } catch (x) { b.textContent = "Copy failed"; }
   setTimeout(() => (b.textContent = "Copy email"), 2000);
 };
-// The contact form posts to FormSubmit through its action attribute in index.html, so no JavaScript is needed for it.
+
+// Contact form: send to FormSubmit without leaving the page
+const form = $("#form");
+if (form) {
+  const formBtn = $("#formBtn");
+  const formStatus = $("#formStatus");
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    formBtn.disabled = true;
+    formBtn.textContent = "Sending...";
+    formStatus.textContent = "";
+    try {
+      const res = await fetch(form.action, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: new FormData(form),
+      });
+      const data = await res.json();
+      if (res.ok && String(data.success) === "true") {
+        formStatus.textContent = "Thank you! Your message was sent.";
+        formStatus.style.color = "#2e7d32";
+        form.reset();
+      } else {
+        throw new Error(data.message || "Send failed");
+      }
+    } catch (err) {
+      formStatus.textContent = "Sorry, something went wrong. Please email me directly at " + EMAIL;
+      formStatus.style.color = "#c62828";
+    }
+    formBtn.disabled = false;
+    formBtn.textContent = "Send message";
+  });
+}
