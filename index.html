@@ -132,6 +132,21 @@
   html.dark #projects article .toggle { color: #D2465A; }
   html.dark #filters button[aria-pressed="false"] { background: #171416; border-color: #2B2427; color: inherit; }
   html.dark #filters button[aria-pressed="false"]:hover { border-color: #7A1024; }
+
+  /* ===== Light mode: Skills on cream with dark text (must stay LAST so it wins over the rules above) ===== */
+  html:not(.dark) .skills-section { background: var(--cream); color: #2A1A1D; }
+  html:not(.dark) .about-fade { background: linear-gradient(180deg, transparent, var(--cream)); }
+  html:not(.dark) #skills h2,
+  html:not(.dark) .skills-label { color: #2A1A1D; }
+  html:not(.dark) .skills-section .skill-chip {
+    color: #2A1A1D;
+    background: var(--cream-card);
+    border-color: var(--cream-line);
+  }
+  html:not(.dark) .skills-section .skill-chip:hover {
+    border-color: #7A1024;
+    background: #F3E3C0;
+  }
 </style>
 <script>
   // Apply saved or system theme before the page paints
@@ -188,7 +203,7 @@
       </div>
     </div>
 
-    <!-- Black shadow at the bottom that blends into the Skills section -->
+    <!-- Shadow at the bottom that blends into the Skills section (black in dark mode, cream in light mode) -->
     <div class="about-fade" aria-hidden="true"></div>
   </section>
 
