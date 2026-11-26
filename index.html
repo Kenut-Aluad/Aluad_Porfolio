@@ -232,15 +232,6 @@ html:not(.dark) #projects article .rounded-full:hover {
       background: #1B1612;
       border-color: rgba(240,227,200,.16);
     }
-    html.dark #projects article .rounded-full::before,
-html:not(.dark) #projects article .rounded-full::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #D2465A;
-}
-html:not(.dark) #projects article .rounded-full::before { background: #7A1024; }
     html.dark #projects article:hover { border-color: rgba(240,227,200,.6); }
     html.dark #projects article .border-t { border-color: rgba(240,227,200,.16); }
     html.dark #projects article .rounded-full {
@@ -307,64 +298,108 @@ html.dark #projects article .rounded-full:hover {
     html.dark #filters button[aria-pressed="false"]:hover { border-color: #7A1024; }
 
     /* Curated skills matrix */
-    .skills-intro { color: #CFC3AE; }
+    .skills-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem 2rem;
+    }
+    .skills-intro {
+      max-width: 40rem;
+      margin-top: .75rem;
+      color: #CFC3AE;
+      font-size: 1rem;
+    }
     .skills-matrix {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: .9rem;
     }
     .skill-group-card {
+      position: relative;
       min-width: 0;
-      padding: 1.35rem;
-      border: 1px solid rgba(243,233,216,.18);
-      border-radius: 1rem;
-      background: rgba(255,255,255,.035);
+      overflow: hidden;
+      padding: 1.15rem;
+      border: 1px solid rgba(243,233,216,.14);
+      border-radius: 1.1rem;
+      background: linear-gradient(155deg, rgba(255,255,255,.075), rgba(255,255,255,.025) 65%);
+      box-shadow: 0 16px 38px rgba(0,0,0,.14);
+      transition: border-color .25s ease, background .25s ease, transform .25s ease;
+    }
+    .skill-group-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 2px;
+      background: linear-gradient(90deg, #D2465A, rgba(232,213,168,.65), transparent);
+      opacity: .8;
+    }
+    .skill-group-card:hover {
+      border-color: rgba(210,70,90,.5);
+      background: linear-gradient(155deg, rgba(210,70,90,.1), rgba(255,255,255,.035) 65%);
+      transform: translateY(-4px);
     }
     .skill-group-heading {
       display: flex;
-      align-items: baseline;
-      gap: .8rem;
-      padding-bottom: .9rem;
-      border-bottom: 1px solid rgba(243,233,216,.16);
+      align-items: center;
+      gap: .7rem;
+      padding-bottom: .8rem;
+      border-bottom: 1px solid rgba(243,233,216,.13);
     }
     .skill-group-number {
-      color: #D2465A;
-      font: 700 .78rem/1 "IBM Plex Sans", sans-serif;
-      letter-spacing: .12em;
+      display: inline-grid;
+      width: 2rem;
+      height: 2rem;
+      flex: 0 0 auto;
+      place-items: center;
+      border: 1px solid rgba(210,70,90,.35);
+      border-radius: .65rem;
+      background: rgba(210,70,90,.12);
+      color: #F08B99;
+      font: 700 .7rem/1 "IBM Plex Sans", sans-serif;
+      letter-spacing: .04em;
     }
     .skill-group-heading h3 {
       margin: 0;
       color: #F3E9D8;
-      font: 700 1.2rem/1.3 "Bricolage Grotesque", sans-serif;
+      font: 700 1.08rem/1.3 "Bricolage Grotesque", sans-serif;
     }
     .skill-items { margin: 0; padding: 0; list-style: none; }
     .skill-item-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: .75rem;
-      padding: .82rem 0;
-      border-bottom: 1px solid rgba(243,233,216,.10);
+      gap: .55rem;
+      padding: .72rem 0;
+      border-bottom: 1px solid rgba(243,233,216,.08);
     }
     .skill-item-row:last-child { border-bottom: 0; padding-bottom: 0; }
     .skill-item-name {
       display: inline-flex;
       min-width: 0;
       align-items: center;
-      gap: .65rem;
+      gap: .55rem;
       color: #F3E9D8;
-      font-size: .98rem;
+      font-size: .9rem;
       font-weight: 500;
     }
-    .skill-item-name img, .skill-item-name svg { flex: 0 0 auto; }
+    .skill-item-name img, .skill-item-name svg {
+      flex: 0 0 auto;
+      width: 28px;
+      height: 28px;
+      padding: 5px;
+      border-radius: .6rem;
+      background: rgba(255,255,255,.92);
+    }
+    .skill-item-name svg { color: #7A1424; }
     .skill-tier {
       display: inline-flex;
       flex: 0 0 auto;
       align-items: center;
       border: 1px solid rgba(243,233,216,.22);
       border-radius: 999px;
-      padding: .28rem .62rem;
-      font-size: .72rem;
+      padding: .28rem .52rem;
+      font-size: .67rem;
       line-height: 1.25;
       font-weight: 600;
       white-space: nowrap;
@@ -388,15 +423,19 @@ html.dark #projects article .rounded-full:hover {
     .skills-legend {
       display: flex;
       flex-wrap: wrap;
-      gap: .75rem 1.25rem;
+      gap: .5rem;
     }
     .legend-item {
       display: inline-flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: .5rem;
+      gap: .4rem;
+      padding: .35rem .55rem;
+      border: 1px solid rgba(243,233,216,.12);
+      border-radius: 999px;
+      background: rgba(255,255,255,.035);
       color: #CFC3AE;
-      font-size: .84rem;
+      font-size: .75rem;
     }
     .soft-skills-list { display: flex; flex-wrap: wrap; gap: .65rem; }
     .soft-skill-chip {
@@ -405,12 +444,45 @@ html.dark #projects article .rounded-full:hover {
       gap: .55rem;
       border: 1px solid rgba(243,233,216,.2);
       border-radius: 999px;
-      padding: .55rem .9rem;
-      background: rgba(255,255,255,.05);
+      padding: .6rem .95rem;
+      background: linear-gradient(145deg, rgba(255,255,255,.075), rgba(255,255,255,.025));
       color: #F3E9D8;
       font-size: .93rem;
+      transition: border-color .2s ease, background .2s ease, transform .2s ease;
+    }
+    .soft-skill-chip:hover {
+      border-color: rgba(210,70,90,.55);
+      background: rgba(210,70,90,.1);
+      transform: translateY(-2px);
     }
     .soft-skill-chip svg { color: #E8D5A8; }
+    .skills-label {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      margin-bottom: 1.25rem;
+      font-size: 1.35rem;
+    }
+    .skills-label::before {
+      content: "";
+      width: .22rem;
+      height: 1.3em;
+      border-radius: 999px;
+      background: linear-gradient(#D2465A, #E8D5A8);
+    }
+    @media (max-width: 1050px) {
+      .skills-matrix { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 560px) {
+      .skills-matrix { grid-template-columns: 1fr; }
+      .skill-group-card { padding: 1rem; }
+      .skills-intro { font-size: .95rem; }
+      .legend-item { border-radius: .8rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .skill-group-card, .soft-skill-chip { transition: none; }
+      .skill-group-card:hover, .soft-skill-chip:hover { transform: none; }
+    }
 
     /* Full-screen project case study modal */
     body.project-dialog-open { overflow: hidden; }
@@ -1036,35 +1108,37 @@ html.dark #experience::before {
 @media (max-width: 767px) {
   .hero-title { text-align: center; }
   .hero-hello::before { display: none; }
+  .hero-text { margin-top: 1.5rem !important; }
 }
 .hero-photo img {
   image-rendering: -webkit-optimize-contrast;
   backface-visibility: hidden;
 }
 
-/* ===== Sharp hero photo: real sizing instead of transform: scale ===== */
+/* Keep the phone photo in normal flow; desktop uses a focused crop below. */
 .hero-photo {
   position: relative;
   aspect-ratio: 1586 / 992;
   transform: none !important;
 }
 .hero-photo img {
-  position: absolute;
-  top: -17.5%;
-  left: -17.5%;
-  width: 135% !important;
-  height: 135% !important;
-  max-width: none;
+  display: block;
+  position: relative;
+  width: 100% !important;
+  height: auto !important;
+  max-width: 100%;
   object-fit: contain;
 }
 
 @media (min-width: 768px) {
   .hero-photo { transform: none !important; }
   .hero-photo img {
-    top: -112%;
+    position: absolute;
+    top: -75%;
     left: -112%;
     width: 324% !important;
     height: 324% !important;
+    max-width: none;
   }
 }
 /* ===== Soft skills marquee ===== */
@@ -1171,7 +1245,12 @@ html.dark #experience::before {
     <!-- Curated skills matrix -->
     <section id="skills" class="skills-section py-20 text-white md:py-28">
       <div class="mx-auto max-w-6xl px-6">
-        <h2 class="font-display text-4xl font-bold tracking-tight md:text-5xl">Skills</h2>
+        <div class="skills-heading">
+          <div>
+            <h2 class="font-display text-4xl font-bold tracking-tight md:text-5xl">Skills</h2>
+            <p class="skills-intro">Technologies and tools I’ve used across coursework and projects.</p>
+          </div>
+        </div>
 
         <div class="skills-legend mt-8" aria-label="Familiarity tier descriptions">
           <span class="legend-item"><span class="skill-tier tier-comfortable">Comfortable</span><span>Used hands-on across projects</span></span>
@@ -1181,7 +1260,7 @@ html.dark #experience::before {
 
         <div id="skillsMatrix" class="skills-matrix mt-8" aria-label="Technical skills by domain"></div>
 
-        <div class="mt-10">
+        <div class="mt-12">
           <h3 class="skills-label">Soft skills</h3>
           <div class="marquee" aria-label="Soft skills">
           <div id="softSkillsList" class="marquee-track soft-track" role="list"></div>
@@ -1294,5 +1373,6 @@ html.dark #experience::before {
   </footer>
 
   <script src="index.js"></script>
+  <script src="desktop-fx.js"></script>
 </body>
 </html>
