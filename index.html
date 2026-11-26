@@ -138,15 +138,17 @@
         </div>
       </div>
 
-        <form action="https://formsubmit.co/aluad.kentandrian@gmail.com"
+        <form action="https://formsubmit.co/ajax/aluad.kentandrian@gmail.com"
               method="POST"
               id="form"
               class="grid gap-4">
 
             <!-- Email settings -->
             <input type="hidden" name="_subject" value="New Portfolio Message!">
-            <input type="hidden" name="_captcha" value="true">
+            <input type="hidden" name="_captcha" value="false">
             <input type="hidden" name="_template" value="table">
+            <!-- Spam trap: real visitors never see or fill this -->
+            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
 
             <!-- Name -->
             <label class="grid gap-1 font-medium">
@@ -185,11 +187,15 @@
 
             <!-- Submit Button -->
             <button
+                id="formBtn"
                 type="submit"
                 class="justify-self-start rounded-full bg-maroon px-6 py-3 font-medium text-white transition hover:bg-maroon-hi hover:-translate-y-0.5 dark:bg-[#D2465A] dark:text-ink"
             >
                 Send message
             </button>
+
+            <!-- Success / error message -->
+            <p id="formStatus" role="status" aria-live="polite" class="min-h-6 font-medium"></p>
 
         </form>
 
