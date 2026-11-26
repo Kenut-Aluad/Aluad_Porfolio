@@ -17,23 +17,121 @@
   @media (min-width: 768px) {
     .hero-grid  { grid-template-columns: 450px 1fr; column-gap: 3rem; align-items: center; }
     .hero-photo { max-width: 400px !important; margin: 0 !important; transform: scale(3.24); transform-origin: center; }
-    .hero-text  { margin-top: 0 !important; text-align: left !important; }
+    .hero-text  { margin-top: 0 !important; text-align: left !important; padding-bottom: 6.5rem; }
     .hero-text h1, .hero-text p { margin-left: 0 !important; margin-right: 0 !important; }
     .hero-actions, .hero-stats { justify-content: flex-start !important; }
   }
 
-  /* Technical skills marquee */
+  /* About section: black shadow fading in at the bottom so it joins the black Skills section */
+  .about-fade { position: absolute; left: 0; right: 0; bottom: 0; height: 12rem; pointer-events: none; background: linear-gradient(180deg, transparent, #0B0B0C); }
+
+  /* Skills marquees (hero + Skills section) */
   .marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
   .marquee-track { display: flex; width: max-content; animation: marquee 30s linear infinite; }
+  .marquee-track.reverse { animation-direction: reverse; }
   .marquee:hover .marquee-track { animation-play-state: paused; }
   .skill-chip { white-space: nowrap; margin-right: .75rem; padding: .4rem 1rem; border: 1px solid rgba(255,255,255,.22); border-radius: 999px; background: rgba(255,255,255,.06); font-size: .9375rem; color: #F5F2F2; }
   @keyframes marquee { to { transform: translateX(-50%); } }
+
+  /* Skills section: solid black */
+  .skills-section { background: #0B0B0C; }
+  .skills-label { margin-bottom: 1.25rem; font-family: inherit; font-size: 1.5rem; font-weight: 700; letter-spacing: .02em; color: #F5F2F2; }
+  .skills-section .skill-chip { padding: .65rem 1.35rem; margin-right: 1rem; font-size: 1.0625rem; border-color: rgba(255,255,255,.28); background: rgba(255,255,255,.07); }
+  .skills-section .skill-chip:hover { border-color: #D2465A; background: rgba(210,70,90,.14); }
   @media (prefers-reduced-motion: reduce) {
     .marquee { -webkit-mask-image: none; mask-image: none; }
     .marquee-track { animation: none; width: auto; flex-wrap: wrap; }
     .skill-chip { margin-bottom: .5rem; }
     .skill-chip[aria-hidden="true"] { display: none; }
   }
+
+  /* ===== Cream palette ===== */
+  :root { --cream: #F0E3C8; --cream-deep: #E6D5B0; --cream-card: #F8EFDA; --cream-line: #D2BF96; --cream-text: #F3E9D8; }
+
+  /* Light mode: warm cream page, deeper cream band for Certificates, softer cards and inputs */
+  html:not(.dark) body { background: var(--cream); }
+  html:not(.dark) #experience, html:not(.dark) #contact { background: var(--cream); }
+  html:not(.dark) #certificates { background: var(--cream-deep); }
+  html:not(.dark) #projects article, html:not(.dark) #certTrack article { background: var(--cream-card); border-color: var(--cream-line); }
+  html:not(.dark) #projects article:hover { border-color: #7A1024; }
+  html:not(.dark) #projects article .rounded-full { background: var(--cream-deep); }
+  html:not(.dark) #projects article .border-t { border-color: var(--cream-line); }
+  html:not(.dark) #filters button[aria-pressed="false"] { background: var(--cream-card); border-color: var(--cream-line); }
+  html:not(.dark) #contact input, html:not(.dark) #contact textarea, html:not(.dark) #copyBtn { background: var(--cream-card); border-color: var(--cream-line); }
+
+  /* Dark sections: cream text instead of stark white */
+  header a.font-display, #about h1, #about .hero-stats b, #skills h2, .skills-label, .skills-section .skill-chip, footer a:hover { color: var(--cream-text); }
+  #about .hero-text p { color: #E4D8C3; }
+  #about .hero-stats span, footer { color: #CFC3AE; }
+  #about .hero-stats { border-color: rgba(243, 233, 216, .22); }
+
+  /* Extra space under Soft skills */
+  #skills.skills-section { padding-bottom: 8rem; }
+
+  /* Certificates: interactive hover */
+  #certTrack { padding: 12px 4px 24px !important; }
+  #certTrack article { transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease; }
+  #certTrack article:hover { transform: translateY(-8px); border-color: #7A1024; box-shadow: 0 20px 36px -14px rgba(122, 16, 36, .45); }
+  #certTrack article h3 { transition: color .25s ease; }
+  #certTrack article:hover h3 { color: #7A1024; }
+  #certTrack button[data-cert] { overflow: hidden; }
+  #certTrack button[data-cert] img { transition: transform .5s ease; }
+  #certTrack article:hover button[data-cert] img { transform: scale(1.08); }
+  #certTrack button[data-cert]::after {
+    content: "Click to enlarge"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(0deg, rgba(74, 10, 18, .88), rgba(11, 11, 12, .3));
+    color: var(--cream-text); font-weight: 600; font-size: 1rem; letter-spacing: .02em;
+    opacity: 0; transition: opacity .3s ease;
+  }
+  #certTrack article:hover button[data-cert]::after, #certTrack button[data-cert]:focus-visible::after { opacity: 1; }
+  #certPrev, #certNext { transition: background .2s ease, transform .2s ease; }
+  #certPrev:hover, #certNext:hover { background: #7A1024 !important; transform: translateY(-50%) scale(1.12) !important; }
+  html.dark #certTrack article:hover { border-color: #D2465A; box-shadow: 0 20px 36px -14px rgba(210, 70, 90, .35); }
+  html.dark #certTrack article:hover h3 { color: #D2465A; }
+  @media (prefers-reduced-motion: reduce) {
+    #certTrack article, #certTrack button[data-cert] img, #certPrev, #certNext { transition: none; }
+    #certTrack article:hover { transform: none; }
+    #certTrack article:hover button[data-cert] img { transform: none; }
+  }
+
+  /* ===== Cream in dark mode: warm cream text, hairlines and surfaces on the dark page ===== */
+  :root { --cream-muted: #CBBFA8; }
+  html.dark body#top { color: #EADFC9; }
+  html.dark main h2, html.dark #projects h3, html.dark #certTrack h3 { color: var(--cream-text); }
+  html.dark #experience p, html.dark #certificates > div > p, html.dark #contact p, html.dark #projects article p, html.dark #certTrack article p { color: var(--cream-muted); }
+  html.dark #certTrack article p.mt-1 { color: #E8D5A8; }
+
+  /* Cards, tags, chips, fields: warm dark surfaces with cream hairlines */
+  html.dark #certificates { background: #16120F; }
+  html.dark #projects article, html.dark #certTrack article { background: #1B1612; border-color: rgba(240, 227, 200, .16); }
+  html.dark #projects article:hover { border-color: rgba(240, 227, 200, .6); }
+  html.dark #projects article .border-t { border-color: rgba(240, 227, 200, .16); }
+  html.dark #projects article .rounded-full { background: rgba(240, 227, 200, .1); color: var(--cream-text); }
+  html.dark #projects article .toggle { color: #E8D5A8; }
+  html.dark #filters button[aria-pressed="false"] { background: transparent; border-color: rgba(240, 227, 200, .3); color: var(--cream-text); }
+  html.dark #filters button[aria-pressed="false"]:hover { border-color: var(--cream); }
+  html.dark #contact input, html.dark #contact textarea, html.dark #copyBtn { background: rgba(240, 227, 200, .05); border-color: rgba(240, 227, 200, .22); color: var(--cream-text); }
+  html.dark #copyBtn:hover { border-color: var(--cream); }
+
+  /* Cream buttons and icons */
+  html.dark #formBtn { background: var(--cream); color: #0B0B0C; }
+  html.dark #formBtn:hover { background: #FBF3E0; }
+  html.dark #contact .contact-icon { color: var(--cream-text); }
+  html.dark #contact .contact-icon:hover { color: #D2465A; }
+  html.dark #contact a.font-display { color: #E8D5A8; }
+
+  /* ===== Dark mode only: Skills and Experience back to the original look (cream stays in Contact and Certificates) ===== */
+  html.dark #skills h2, html.dark .skills-label, html.dark .skills-section .skill-chip { color: #F5F2F2; }
+  html.dark #experience { color: #F5F2F2; }
+  html.dark #experience h2, html.dark #projects h3 { color: #F5F2F2; }
+  html.dark #experience p, html.dark #projects article p { color: #B5A8AA; }
+  html.dark #projects article { background: #171416; border-color: #2B2427; }
+  html.dark #projects article:hover { border-color: #D2465A; }
+  html.dark #projects article .border-t { border-color: #2B2427; }
+  html.dark #projects article .rounded-full { background: #141214; color: #D2465A; }
+  html.dark #projects article .toggle { color: #D2465A; }
+  html.dark #filters button[aria-pressed="false"] { background: #171416; border-color: #2B2427; color: inherit; }
+  html.dark #filters button[aria-pressed="false"]:hover { border-color: #7A1024; }
 </style>
 <script>
   // Apply saved or system theme before the page paints
@@ -52,7 +150,9 @@
     <a href="#top" class="font-display text-lg font-extrabold">Kent Andrian Aluad</a>
     <nav class="flex items-center gap-6" aria-label="Primary">
       <a href="#about" class="nav-link hidden border-b-2 border-transparent text-[#C9BDBF] hover:text-white aria-[current=true]:border-maroon-hi aria-[current=true]:text-white md:block">About</a>
+      <a href="#skills" class="nav-link hidden border-b-2 border-transparent text-[#C9BDBF] hover:text-white aria-[current=true]:border-maroon-hi aria-[current=true]:text-white md:block">Skills</a>
       <a href="#experience" class="nav-link hidden border-b-2 border-transparent text-[#C9BDBF] hover:text-white aria-[current=true]:border-maroon-hi aria-[current=true]:text-white md:block">Experience</a>
+      <a href="#certificates" class="nav-link hidden border-b-2 border-transparent text-[#C9BDBF] hover:text-white aria-[current=true]:border-maroon-hi aria-[current=true]:text-white md:block">Certificates</a>
       <a href="#contact" class="nav-link hidden border-b-2 border-transparent text-[#C9BDBF] hover:text-white aria-[current=true]:border-maroon-hi aria-[current=true]:text-white md:block">Contacts</a>
       <button id="theme" type="button" aria-label="Switch between light and dark theme" class="h-9 w-9 rounded-full border border-[#4a3f41] text-white hover:border-maroon-hi">◐</button>
     </nav>
@@ -61,8 +161,8 @@
 </header>
 
 <main>
-  <!-- Hero / About (this is now the About section: id="about" and a <section> so the nav highlight can track it) -->
-  <section id="about" class="bg-gradient-to-br from-ink from-55% to-maroon-deep pb-16 pt-0 text-white md:pb-24 md:pt-10">
+  <!-- Hero / About (id="about" and a <section> so the nav highlight can track it) -->
+  <section id="about" class="relative bg-gradient-to-br from-ink from-55% to-maroon-deep pb-16 pt-0 text-white md:pb-24 md:pt-10">
     <div class="hero-grid mx-auto grid max-w-6xl items-center gap-0 px-6">
       <div class="hero-text relative z-10 -mt-40 md:-mt-64 md:text-center">
         <h1 class="font-display text-5xl font-extrabold leading-[1.05] tracking-tight md:mx-auto md:max-w-4xl md:text-6xl">Game and Web Developer building reliable Web Game Products.</h1>
@@ -80,12 +180,6 @@
           <div><b class="block font-display text-3xl" data-count="6">6</b><span class="text-[15px] text-[#B5A8AA]">Projects built</span></div>
           <div><b class="block font-display text-3xl" data-count="2">2</b><span class="text-[15px] text-[#B5A8AA]">Years as Dean's Lister</span></div>
         </div>
-
-        <!-- Technical skills (scrolling marquee, filled in by index.js) -->
-        <div class="mt-8">
-          <p class="mb-3 text-[15px] uppercase tracking-widest text-[#B5A8AA]">Technical skills</p>
-          <div class="marquee" id="marquee" role="group" aria-label="Technical skills"></div>
-        </div>
       </div>
 
       <!-- Professional photo (transparent PNG blends into the hero background) -->
@@ -93,13 +187,28 @@
         <img src="./pictures/mypic2.png" alt="Kent" class="block h-auto w-full object-contain" style="filter: drop-shadow(0 18px 28px rgba(0,0,0,.35));">
       </div>
     </div>
+
+    <!-- Black shadow at the bottom that blends into the Skills section -->
+    <div class="about-fade" aria-hidden="true"></div>
+  </section>
+
+  <!-- Skills (technical + soft skills, scrolling marquees filled in by index.js) -->
+  <section id="skills" class="skills-section py-20 text-white md:py-28">
+    <div class="mx-auto max-w-6xl px-6">
+      <h2 class="font-display text-4xl font-bold tracking-tight md:text-5xl">Skills</h2>
+
+      <h3 class="skills-label mt-14 md:mt-16">Technical skills</h3>
+      <div class="marquee" id="techMarquee" role="group" aria-label="Technical skills"></div>
+
+      <h3 class="skills-label mt-14">Soft skills</h3>
+      <div class="marquee" id="softMarquee" role="group" aria-label="Soft skills"></div>
+    </div>
   </section>
 
   <!-- Experience (projects and work in one section) -->
-  <section id="experience" class="py-16 md:py-20">
+  <section id="experience" class="py-16 md:py-20" style="padding-bottom:6rem">
     <div class="mx-auto max-w-6xl px-6">
-      <h2 class="font-display text-4xl font-bold tracking-tight md:text-5xl">Project Experiences</h2>
-      <p class="mb-8 mt-2 max-w-xl text-[#55494B] dark:text-[#B5A8AA]">Filter by type, then open a project to see how it was built.</p>
+      <h2 class="font-display text-4xl font-bold tracking-tight md:text-5xl" style="margin-bottom:1rem">Project Experiences</h2>
       <div id="filters" class="mb-6 flex flex-wrap gap-2" role="group" aria-label="Filter projects"></div>
       <div id="projects" class="grid gap-5 md:grid-cols-2"></div>
     </div>
