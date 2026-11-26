@@ -232,6 +232,15 @@ html:not(.dark) #projects article .rounded-full:hover {
       background: #1B1612;
       border-color: rgba(240,227,200,.16);
     }
+    html.dark #projects article .rounded-full::before,
+html:not(.dark) #projects article .rounded-full::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #D2465A;
+}
+html:not(.dark) #projects article .rounded-full::before { background: #7A1024; }
     html.dark #projects article:hover { border-color: rgba(240,227,200,.6); }
     html.dark #projects article .border-t { border-color: rgba(240,227,200,.16); }
     html.dark #projects article .rounded-full {
@@ -956,6 +965,123 @@ html.dark #experience::before {
   #skills::before, #skills::after,
   #experience::before { animation: none; }
 }
+
+/* ===== Hero heading ===== */
+.hero-title { margin: 0; line-height: 1.05; }
+.hero-title > span { display: block; }
+
+.hero-hello {
+  margin-bottom: .9rem;
+  font: 500 1rem/1 "IBM Plex Sans", sans-serif;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: #E8B7BE;
+}
+.hero-hello::before {
+  content: "";
+  display: inline-block;
+  width: 2.2rem;
+  height: 2px;
+  margin-right: .8rem;
+  vertical-align: middle;
+  background: #D2465A;
+}
+
+.hero-name {
+  font-size: clamp(2.6rem, 7vw, 4.4rem);
+  letter-spacing: -.035em;
+  color: var(--cream-text);
+}
+
+.hero-role {
+  position: relative;
+  display: inline-block !important;
+  margin-top: .6rem;
+  padding-bottom: .9rem;
+  font-size: clamp(1.5rem, 4vw, 2.3rem);
+  font-weight: 700;
+  letter-spacing: -.01em;
+  background: linear-gradient(90deg, #D2465A, #E8D5A8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+.hero-role::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 4.5rem;
+  height: 4px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #D2465A, #E8D5A8);
+  transition: width .4s ease;
+}
+.hero-title:hover .hero-role::after { width: 100%; }
+
+/* fade-up entrance */
+.hero-title > span { animation: heroIn .8s cubic-bezier(.2,.7,.2,1) both; }
+.hero-name { animation-delay: .12s !important; }
+.hero-role { animation-delay: .24s !important; }
+@keyframes heroIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-title > span { animation: none; }
+}
+
+/* center on mobile, left on desktop */
+@media (max-width: 767px) {
+  .hero-title { text-align: center; }
+  .hero-hello::before { display: none; }
+}
+.hero-photo img {
+  image-rendering: -webkit-optimize-contrast;
+  backface-visibility: hidden;
+}
+
+/* ===== Sharp hero photo: real sizing instead of transform: scale ===== */
+.hero-photo {
+  position: relative;
+  aspect-ratio: 1586 / 992;
+  transform: none !important;
+}
+.hero-photo img {
+  position: absolute;
+  top: -17.5%;
+  left: -17.5%;
+  width: 135% !important;
+  height: 135% !important;
+  max-width: none;
+  object-fit: contain;
+}
+
+@media (min-width: 768px) {
+  .hero-photo { transform: none !important; }
+  .hero-photo img {
+    top: -112%;
+    left: -112%;
+    width: 324% !important;
+    height: 324% !important;
+  }
+}
+/* ===== Soft skills marquee ===== */
+.soft-track { animation-duration: 35s; }
+.soft-track .soft-skill-chip {
+  flex: 0 0 auto;
+  margin-right: .75rem;
+  white-space: nowrap;
+}
+.soft-track .soft-skill-chip:hover {
+  border-color: #D2465A;
+  background: rgba(210,70,90,.14);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .soft-track { animation: none; flex-wrap: wrap; width: auto; }
+}
   </style>
 
   <script>
@@ -993,8 +1119,10 @@ html.dark #experience::before {
     <section id="about" class="relative bg-gradient-to-br from-ink from-55% to-maroon-deep pb-16 pt-0 text-white md:pb-24 md:pt-10">
       <div class="hero-grid mx-auto grid max-w-6xl items-center gap-0 px-6">
         <div class="hero-text relative z-10 -mt-40 md:-mt-64 md:text-center">
-          <h1 class="font-display text-5xl font-extrabold leading-[1.05] tracking-tight md:mx-auto md:max-w-4xl md:text-6xl">
-            Game and Web Developer building reliable Web Game Products.
+          <h1 class="hero-title font-display font-extrabold tracking-tight">
+            <span class="hero-hello">Hi, I'm</span>
+            <span class="hero-name">Kent Andrian Aluad</span>
+            <span class="hero-role">Game &amp; Web Developer</span>
           </h1>
 
           <p class="mt-6 max-w-xl text-xl md:mx-auto text-[#D8CDCF]">
@@ -1045,7 +1173,7 @@ html.dark #experience::before {
       <div class="mx-auto max-w-6xl px-6">
         <h2 class="font-display text-4xl font-bold tracking-tight md:text-5xl">Skills</h2>
 
-        <div class="skills-legend mt-7" aria-label="Familiarity tier descriptions">
+        <div class="skills-legend mt-8" aria-label="Familiarity tier descriptions">
           <span class="legend-item"><span class="skill-tier tier-comfortable">Comfortable</span><span>Used hands-on across projects</span></span>
           <span class="legend-item"><span class="skill-tier tier-working">Working knowledge</span><span>Applied in a project</span></span>
           <span class="legend-item"><span class="skill-tier tier-familiar">Familiar</span><span>Basic exposure</span></span>
@@ -1053,9 +1181,11 @@ html.dark #experience::before {
 
         <div id="skillsMatrix" class="skills-matrix mt-8" aria-label="Technical skills by domain"></div>
 
-        <div class="mt-14">
+        <div class="mt-10">
           <h3 class="skills-label">Soft skills</h3>
-          <div id="softSkillsList" class="soft-skills-list" role="list" aria-label="Soft skills"></div>
+          <div class="marquee" aria-label="Soft skills">
+          <div id="softSkillsList" class="marquee-track soft-track" role="list"></div>
+        </div>
         </div>
       </div>
     </section>
