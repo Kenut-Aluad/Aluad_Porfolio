@@ -1,4 +1,3 @@
-
 // ===== Edit your content here =====
 const EMAIL = "aluad.kentandrian@gmail.com";
 
@@ -44,13 +43,9 @@ const certificates = [
   { title: "Dean's Lister, 2nd Year: Information Technology", issuer: "Filamer Christian University", date: "A.Y. 2025– 2026", image: "./pictures/cert5.jpeg" },
 ];
 
-const skills = {
-  Languages: ["Python", "JavaScript", "SQL"],
-  Frontend: ["HTML", "Tailwind CSS", "Accessibility"],
-  Backend: ["Django", "MySQL", "PostgreSQL"],
-  "Game & 3D": ["Godot", "Blender"],
-  Networking: ["LAN cabling", "RJ45 crimping", "Network installation", "Router & switch setup"],
-};
+// Skills shown in the scrolling rows. Edit these lists to change what appears.
+const techAll = ["Python", "JavaScript", "SQL", "HTML", "CSS", "Tailwind CSS", "React", "Django", "MySQL", "PostgreSQL", "Godot", "Blender", "Figma", "Networking"];
+const softSkills = ["Teamwork", "Communication", "Problem Solving", "Adaptability", "Time Management", "Creativity", "Attention to Detail", "Eagerness to Learn"];
 
 // ===== Code =====
 const $ = (s) => document.querySelector(s);
@@ -63,6 +58,7 @@ const skillIcons = {
   "Python": ICON("python"),
   "JavaScript": ICON("javascript"),
   "HTML": ICON("html5"),
+  "CSS": ICON("css3"),
   "Tailwind CSS": ICON("tailwindcss"),
   "React" : ICON("react"),
   "Django": ICON("django", "django-plain"),
@@ -70,30 +66,41 @@ const skillIcons = {
   "PostgreSQL": ICON("postgresql"),
   "Godot": ICON("godot"),
   "Blender": ICON("blender"),
+  "Figma": ICON("figma"),
 };
-const networkSvg = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M12 7v5M12 12l-6 5M12 12l6 5"/></svg>`;
+// Small line icon helper (for skills that have no Devicon logo)
+const lineIcon = (paths, size = 18) =>
+  `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
+
+const lineIcons = {
+  "Networking": '<circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M12 7v5M12 12l-6 5M12 12l6 5"/>',
+  // Soft skills
+  "Teamwork": '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  "Communication": '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+  "Problem Solving": '<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/>',
+  "Adaptability": '<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>',
+  "Time Management": '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+  "Creativity": '<path d="M12 3l1.9 5.8L20 10.7l-6.1 1.9L12 18.5l-1.9-5.9L4 10.7l6.1-1.9z"/>',
+  "Attention to Detail": '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+  "Eagerness to Learn": '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+};
+
 const logo = (name, size = 18) => {
   if (skillIcons[name]) {
     return `<img src="${skillIcons[name]}" alt="" width="${size}" height="${size}" loading="lazy" ${name === "Django" ? 'class="dark:invert" ' : ""}onerror="this.remove()" style="width:${size}px;height:${size}px">`;
   }
-  if (name === "Networking") return networkSvg;
+  if (lineIcons[name]) return lineIcon(lineIcons[name], size);
   return "";
 };
 
-// Technical skills marquee in the hero
-const techStack = ["Godot", "Blender", "HTML", "Tailwind CSS","React", "JavaScript", "Python", "Django", "MySQL", "PostgreSQL", "Networking"];
-const marquee = $("#marquee");
-if (marquee) {
-  const chips = (hidden) => techStack.map((t) => `<span class="skill-chip" style="display:inline-flex;flex-direction:row;align-items:center;gap:8px;white-space:nowrap"${hidden ? ' aria-hidden="true"' : ""}>${logo(t)}<span>${t}</span></span>`).join("");
-  marquee.innerHTML = `<div class="marquee-track">${chips(false)}${chips(true)}</div>`;
+// Skills marquees (hero + Skills section). Pass reverse = true to scroll the other way.
+function fillMarquee(el, items, reverse) {
+  if (!el) return;
+  const chips = (hidden) => items.map((t) => `<span class="skill-chip" style="display:inline-flex;flex-direction:row;align-items:center;gap:10px;white-space:nowrap"${hidden ? ' aria-hidden="true"' : ""}>${logo(t, 22)}<span>${t}</span></span>`).join("");
+  el.innerHTML = `<div class="marquee-track${reverse ? " reverse" : ""}">${chips(false)}${chips(true)}</div>`;
 }
-
-// Skills
-const skillsEl = $("#skills");
-if (skillsEl) skillsEl.innerHTML = Object.entries(skills).map(([group, items]) =>
-  `<div><h3 class="mb-2 font-display font-bold">${group}</h3><div class="flex flex-wrap gap-2">${
-    items.map((s) => `<span class="rounded-full border border-[#E3DADB] bg-white px-3 py-1 text-[15px] dark:border-[#2B2427] dark:bg-[#171416]" style="display:inline-flex;flex-direction:row;align-items:center;gap:8px">${logo(s, 16)}<span>${s}</span></span>`).join("")
-  }</div></div>`).join("");
+fillMarquee($("#techMarquee"), techAll);
+fillMarquee($("#softMarquee"), softSkills, true);
 
 // Project filters
 const filters = $("#filters");
