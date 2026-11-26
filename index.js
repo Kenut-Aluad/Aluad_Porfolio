@@ -371,7 +371,8 @@ if (form) {
         throw new Error(data.message || "Send failed");
       }
     } catch (err) {
-      formStatus.textContent = "Sorry, something went wrong. Please email me directly at " + EMAIL;
+      console.error(err);
+      formStatus.textContent = "Error: " + err.message + " (or email me directly at " + EMAIL + ")";
       formStatus.style.color = "#c62828";
     }
     formBtn.disabled = false;
