@@ -1,3 +1,4 @@
+
 // ===== Edit your content here =====
 const EMAIL = "aluad.kentandrian@gmail.com";
 
@@ -361,6 +362,7 @@ if (form) {
         method: "POST",
         headers: { Accept: "application/json" },
         body: new FormData(form),
+        signal: AbortSignal.timeout(20000),
       });
       const data = await res.json();
       if (res.ok && String(data.success) === "true") {
@@ -372,8 +374,13 @@ if (form) {
       }
     } catch (err) {
       console.error(err);
-      formStatus.textContent = "Error: " + err.message + " (or email me directly at " + EMAIL + ")";
-      formStatus.style.color = "#c62828";
+      if (err.name === "TimeoutError") {
+        formStatus.textContent = "Taking longer than usual. Your message may have been sent. If you don't hear back, email me at " + EMAIL;
+        formStatus.style.color = "#b26a00";
+      } else {
+        formStatus.textContent = "Error: " + err.message + " (or email me directly at " + EMAIL + ")";
+        formStatus.style.color = "#c62828";
+      }
     }
     formBtn.disabled = false;
     formBtn.textContent = "Send message";
